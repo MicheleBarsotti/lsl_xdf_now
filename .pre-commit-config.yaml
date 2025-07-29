@@ -1,0 +1,94 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+# Apply to all files without commiting:
+#   pre-commit run --all-files
+# Apply to a single without commiting:
+#   pre-commit run --files [file]
+# Update this file:
+#   pre-commit autoupdate
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-ast
+      - id: check-byte-order-marker
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-executables-have-shebangs
+      - id: check-json
+      - id: check-yaml
+        name: Check YAML (unsafe)
+        args: [--unsafe]
+        files: .gitlab-ci.yml # some custom tags are used in gitlab CI not supported for normal YAML
+      # check other yaml files normally
+      - id: check-yaml
+        exclude: .gitlab-ci.yml
+      - id: debug-statements
+      - id: detect-private-key
+      - id: end-of-file-fixer
+        exclude: ^tests/.*/fixtures/.*|.*architecture\.txt$
+      - id: trailing-whitespace
+        exclude: ^tests/.*/fixtures/.*architecture.txt
+      - id: mixed-line-ending
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.16.1
+    hooks:
+      - id: mypy
+        exclude: ^docs/.*
+        args: [--ignore-missing-imports]
+        additional_dependencies: ['types-PyYAML']
+  - repo: https://github.com/asottile/seed-isort-config
+    rev: v2.2.0
+    hooks:
+      - id: seed-isort-config
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.10.1
+    hooks:
+      - id: isort
+        args:
+          - -m3
+          - -tc
+          - -w88
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
+  - repo: https://github.com/hadialqattan/pycln
+    rev: v2.5.0 # Possible releases: https://github.com/hadialqattan/pycln/releases
+    hooks:
+      - id: pycln
+        args: [--config=pyproject.toml, "--all"]
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.20.0
+    hooks:
+      - id: pyupgrade
+        args: [--py36-plus]
+  - repo: https://github.com/asottile/blacken-docs
+    rev: 1.19.1
+    hooks:
+      - id: blacken-docs
+        additional_dependencies: [black==23.12.1]
+  # pylint must be installed locally: pip install pylint==2.13.9
+  - repo: local
+    hooks:
+      - id: pylint
+        name: PyLint
+        entry: pylint
+        language: python
+        files: \.py$
+        args:
+          - --good-names=i,j,k,x,y,df,a,b,e,N,Wn,X,fp,ax,lr
+          - --max-line-length=100
+          - --generated-members=numpy.*,torch.*
+          - --extension-pkg-whitelist=cv2,torch
+          - --rcfile=.pylintrc
+          # disable:
+          # R0903 Too few public methods
+          # R0913 Too many arguments (n/5)
+          # E0401 Unable to import
+          # C0116 missing-function-docstring
+          # R1735 use-dict-literal
+          # W1514 unspecified-encoding
+          # R1734 use-list-literals
+          # C0412 ungrouped-imports (this is managed by isort)
+          - --disable=R0903, R0913, E0401, R1735, C0116, W1514, R1734, C0412
