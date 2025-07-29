@@ -47,9 +47,9 @@ Edit `flask_app/stream_config.yaml` to define your streams.
 Example:
 
 ```yaml
-- alias: "GSR1"
-  stream_type: "GSR"
-  stream_name: "Shimmer_GSR_FBF5_26"
+- alias: "StreamName"
+  stream_type: "StreamType"
+  stream_name: "StreamName"
   stream_source_id: ""
   filter_params:
     low_cut: null

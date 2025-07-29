@@ -1,7 +1,7 @@
-- alias: "GSR1"
-  stream_type: "GSR"
-  stream_name: "Shimmer_GSR_FBF5_26"
-  stream_source_id: ""
+- alias: "Subject1"
+  stream_type: ""
+  stream_name: ""
+  stream_source_id: "5a3cba554f14992e"
   filter_params:
     low_cut: null
     high_cut: 8
@@ -11,8 +11,8 @@
     notch_filter_width: 5
     notch_filter_order: 2
 
-- alias: "GSR2"
-  stream_type: "GSR"
+- alias: "Subject2"
+  stream_type: ""
   stream_name: ""
   stream_source_id: "6c7cba554f14992e"
   filter_params:
