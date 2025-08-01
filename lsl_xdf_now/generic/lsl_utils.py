@@ -7,13 +7,7 @@ from math import floor
 from time import time
 from typing import Sequence
 
-from lsl_xdf_now.lsl_import import (
-    IRREGULAR_RATE,
-    StreamInfo,
-    StreamInlet,
-    StreamOutlet,
-    resolve_bypred,
-)
+from pylsl import IRREGULAR_RATE, StreamInfo, StreamInlet, StreamOutlet, resolve_bypred
 
 source_uiid_suffix = f"{platform.node()}_{platform.system()}"
 

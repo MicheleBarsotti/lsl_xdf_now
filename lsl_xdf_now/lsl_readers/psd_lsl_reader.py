@@ -37,11 +37,34 @@ class PSDWithLSLreader:
             stream_type=stream_type_eeg,
             stream_name=stream_name_eeg,
         )
-        self.channel_in_lsl = self._get_channel_in_lsl()
+        self.channel_in_lsl = self.lsl_bufferizer._count_channel
         ## real buffer implemented here
         self.buffer_size = int(fs * buffer_size_seconds)
         self.buffer = RingBuffer(time_len=self.buffer_size, channels=n_eeg_channels)
-        ## filter for removing slow freq
+        if n_eeg_channels > self.channel_in_lsl:
+            raise ValueError(
+                f"Requested {n_eeg_channels} channels, but only {self.channel_in_lsl} are available in the LSL stream."
+            )
+        ## filter for removing slow freq and notch filter
+        if preproc_high == 0:
+            preproc_high = fs / 2
+        if preproc_low >= preproc_high:
+            raise ValueError(
+                f"Low cut frequency {preproc_low} must be lower than high cut frequency {preproc_high}."
+            )
+        if preproc_notch_filter >= fs / 2:
+            raise ValueError(
+                f"Notch filter frequency {preproc_notch_filter} must be lower than Nyquist frequency {fs / 2}."
+            )
+        if preproc_notch_filter > 0 and preproc_notch_filter < preproc_low:
+            raise ValueError(
+                f"Notch filter frequency {preproc_notch_filter} must be higher than low cut frequency {preproc_low}."
+            )
+        if preproc_notch_filter > 0 and preproc_notch_filter > preproc_high:
+            raise ValueError(
+                f"Notch filter frequency {preproc_notch_filter} must be lower than high cut frequency {preproc_high}."
+            )
+
         self.filter_eeg = PreprocessIIR(
             low=preproc_low,
             high=preproc_high,
@@ -120,15 +143,6 @@ class PSDWithLSLreader:
 
     def log(self, msg: str, **kwargs):
         print(msg, **kwargs)
-
-    def _get_channel_in_lsl(self):
-        ts = None
-        self.log("looking for channels in lsl {}")
-        while True:
-            sample, ts = self.lsl_bufferizer.inlet.pull_sample()
-            if ts is None or sample is None:
-                continue
-            return len(sample)
 
 
 if __name__ == "__main__":

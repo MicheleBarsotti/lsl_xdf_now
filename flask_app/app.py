@@ -5,6 +5,7 @@ from pathlib import Path
 import yaml
 from flask import Flask, jsonify, send_from_directory
 
+from lsl_xdf_now.generic.lsl_utils import check_for_lsl_stream
 from lsl_xdf_now.lsl_readers.stream_process import StreamProcess
 
 cfg_file = Path(__file__).absolute().parent / "stream_config.yaml"
@@ -19,6 +20,13 @@ with open(cfg_file) as f:
 
 # Start a StreamProcess for each config
 for stream_id, cfg in enumerate(stream_configs):
+    if not check_for_lsl_stream(
+        stream_type=cfg.get("stream_type", "GSR"),
+        stream_name=cfg.get("stream_name", ""),
+        source_id=cfg.get("stream_source_id", ""),
+        timeout=cfg.get("timeout", 3),
+    ):
+        continue
     sp = StreamProcess(
         n_channels=1,
         stream_type=cfg.get("stream_type", "GSR"),

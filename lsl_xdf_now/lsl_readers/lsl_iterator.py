@@ -21,7 +21,6 @@ class LSLIterator:
         stream_type: str = "EEG",
         stream_name: str = "",
         source_id: str = "",
-        count_channel: int | None = None,
         verbose: bool = False,
         out_key: str = "eeg",
         processing_flags: int = 0,
@@ -72,7 +71,7 @@ class LSLIterator:
         self.nhits = 0
         self._last_sample = -1.0
         self._last_sent = time.time()
-        self._count_channel = count_channel
+        self._count_channel = self._get_channel_in_lsl()
         self._verbose = verbose
 
     def _thread_search_stream(self):

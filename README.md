@@ -2,7 +2,7 @@
 
 ## Overview
 
-**lsl_xdf_now** is a Python-based toolkit for real-time and offline processing of biosignal streams using [Lab Streaming Layer (LSL)](https://github.com/sccn/labstreaminglayer) and XDF files.  
+**lsl_xdf_now** is a Python-based toolkit for real-time and offline processing of biosignal streams using [Lab Streaming Layer (LSL)](https://github.com/sccn/labstreaminglayer) and XDF files.
 It provides a modular backend for stream acquisition, feature extraction, and live feedback, as well as a modern web-based frontend for visualization and audio feedback.
 
 This repository is designed for researchers and developers working with physiological signals (e.g., GSR, EEG) who need a flexible, extensible, and user-friendly environment for both online and offline experiments.
@@ -43,7 +43,7 @@ pre-commit install
 
 ### 3. Configure Streams
 
-Edit `flask_app/stream_config.yaml` to define your streams.  
+Edit `flask_app/stream_config.yaml` to define your streams.
 Example:
 
 ```yaml
@@ -111,9 +111,10 @@ lsl_xdf_now/
 
 ## Acknowledgments
 
-- Thanks to the [Hensis team](https://www.henesis.eu/) 
+- Thanks to the [Hensis team](https://www.henesis.eu/)
 - Built on top of [Lab Streaming Layer (LSL)](https://github.com/sccn/labstreaminglayer) and [XDF](https://github.com/sccn/xdf).
 - Thanks to the SCCN team and the open-source community.
+- Thanks to copilot that speed up this kind of things
 
 ---
 
