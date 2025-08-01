@@ -35,8 +35,8 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
-[project.optional-dependencies.dev]
-lint = ["pylint"]
+[project.optional-dependencies]
+dev = ["pylint"]
 
 [project.scripts]
 start-viz-gui = "scripts.start_gui:main"

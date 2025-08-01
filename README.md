@@ -35,8 +35,9 @@ cd lsl_xdf_now
 ### 2. Install Dependencies
 
 ```sh
-pip install -r requirements.txt
+pip install .
 # For development:
+pip install .[dev] # install pylint
 pip install pre-commit
 pre-commit install
 ```
