@@ -71,7 +71,9 @@ function startSound(streamIdx) {
   stream.gainNode = stream.audioCtx.createGain();
   stream.analyser = stream.audioCtx.createAnalyser();
 
-  stream.oscillator.type = 'sine';
+
+  const oscType = document.getElementById(`oscType-${streamIdx}`).value;
+  stream.oscillator.type = oscType;
   const { minFreq } = getParams(streamIdx);
   stream.oscillator.frequency.setValueAtTime(minFreq, stream.audioCtx.currentTime);
   stream.gainNode.gain.setValueAtTime(0.2, stream.audioCtx.currentTime);
@@ -85,7 +87,11 @@ function startSound(streamIdx) {
   document.getElementById(`soundOn-${streamIdx}`).addEventListener('change', () => {
     updateSoundRouting(streamIdx);
   });
-
+  document.getElementById(`oscType-${streamIdx}`).addEventListener('change', (e) => {
+  if (stream.oscillator) {
+    stream.oscillator.type = e.target.value;
+  }
+  });
   stream.analyser.fftSize = 1024;
   stream.bufferLength = stream.analyser.fftSize;
   stream.dataArray = new Uint8Array(stream.bufferLength);
@@ -290,6 +296,15 @@ window.onload = async function() {
       <div class="control-group">
         <button onclick="startSound(${idx})">Start</button>
         <button onclick="stopSound(${idx})">Stop</button>
+      </div>
+      <div class="control-group">
+        <label>Oscillator Type:</label>
+        <select id="oscType-${idx}">
+          <option value="sine">Sine</option>
+          <option value="square">Square</option>
+          <option value="triangle">Triangle</option>
+          <option value="sawtooth">Sawtooth</option>
+        </select>
       </div>
     `;
     container.appendChild(controlPanel);
