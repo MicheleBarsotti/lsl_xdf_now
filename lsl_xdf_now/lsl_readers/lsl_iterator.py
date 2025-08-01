@@ -71,6 +71,7 @@ class LSLIterator:
         self.nhits = 0
         self._last_sample = -1.0
         self._last_sent = time.time()
+        self._count_channel = None
         self._count_channel = self._get_channel_in_lsl()
         self._verbose = verbose
 
